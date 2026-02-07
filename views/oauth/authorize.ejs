@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>本当は IdP のログイン画面</title>
 </head>
 <body>
 ログインしましょう
 <form action="/oauth/login" method="post">
-    <label>ログインID<input type="text" name="loginId" /></label>
-    <label>パスワード<input type="password" name="password" /></label>
+    <div>
+        <label>ログインID<input type="text" name="loginId" /></label>
+    </div>
+    <div>
+        <label>パスワード<input type="password" name="password" /></label>
+    </div>
     <input type="submit" value="ログイン">
 </form>
 </body>
