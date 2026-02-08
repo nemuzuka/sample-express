@@ -42,6 +42,42 @@ app.post('/oauth/token', (req, res)=>{
   });
 });
 
+app.get(`/api/user-info`, verifyToken, (req, res)=>{
+  res.json({username: "ユーザー名００１"});
+});
+
+function verifyToken(req, res, next) {
+  const authHeader = req.header("Authorization");
+  if(authHeader !== undefined) {
+    const splitedHeader = authHeader.split(" ");
+    if(splitedHeader.length !== 2) {
+      const error = new Error("認証トークンが不正です");
+      error.status = 401;
+      return next(error);
+    }
+
+    // 本来は token が正しいとか有効期限とかのチェックを行う
+    // 有効期限が切れていたら BFF トークンを再発行するとかもここで行う
+    const token = splitedHeader[1];
+    console.log(`token: ${token}`);
+    next();
+  } else {
+    const error = new Error("認証トークンがありません");
+    error.status = 401;
+    return next(error);
+  }
+}
+
+app.use((err, req, res, next) => {
+  const status = err.status || 500;
+  res.status(status).json({
+    error: {
+      message: err.message || "サーバー内部エラー",
+      status: status
+    }
+  });
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 });
